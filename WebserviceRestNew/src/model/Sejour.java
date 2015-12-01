@@ -2,6 +2,9 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +18,15 @@ import java.util.List;
 public class Sejour implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	public static class JSonSejour extends JSonListConverter<Sejour>
+	{
+		@Override
+		protected int getID(Sejour element)
+		{
+			return element.getNumSej();
+		}
+	}
+
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private int numSej;
 
@@ -27,7 +39,8 @@ public class Sejour implements Serializable {
 	private int nbPersonnes;
 
 	//bi-directional many-to-one association to Activite
-	@OneToMany(mappedBy="sejour")
+	@OneToMany(mappedBy="sejour", fetch=FetchType.LAZY)
+	@JsonSerialize(using = Activite.JSonActivite.class)
 	private List<Activite> activites;
 
 	//bi-directional many-to-one association to Client

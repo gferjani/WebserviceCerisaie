@@ -15,8 +15,6 @@ public class ClientEntityService extends EntityService
 		EntityTransaction transac = startTransaction();
 		transac.begin();
 		Client client=entitymanager.find(Client.class, id);
-		entitymanager.close();
-		emf.close();
 		return client;
 	}
 	public List<Client> rechercheTousClient()
@@ -25,8 +23,6 @@ public class ClientEntityService extends EntityService
 		EntityTransaction transac = startTransaction();
 		transac.begin();
 		clients=entitymanager.createQuery("SELECT c FROM Client c",Client.class).getResultList();
-		entitymanager.close();
-		emf.close();
 		return clients;
 	}
 	public int ajoutClient(Client client)
@@ -35,8 +31,6 @@ public class ClientEntityService extends EntityService
 		transac.begin();
 		entitymanager.persist(client);
 		transac.commit();
-		entitymanager.close();
-		emf.close();
 		return client.getNumCli();
 	}
 	public void modifierClient(Client client)
@@ -45,8 +39,6 @@ public class ClientEntityService extends EntityService
 		transac.begin();
 		entitymanager.merge(client);
 		transac.commit();
-		entitymanager.close();
-		emf.close();
 	}
 	public void supprimerClient(int id)
 	{
@@ -55,6 +47,10 @@ public class ClientEntityService extends EntityService
 		Client client=entitymanager.find(Client.class, id);
 		entitymanager.remove(client);
 		transac.commit();
+	}
+	
+	public void close()
+	{
 		entitymanager.close();
 		emf.close();
 	}

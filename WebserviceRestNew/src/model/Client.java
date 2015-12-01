@@ -1,7 +1,17 @@
 package model;
 
+import java.io.IOException;
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.annotate.JsonValue;
+import org.codehaus.jackson.map.JsonSerializer;
+import org.codehaus.jackson.map.SerializerProvider;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+import org.hibernate.collection.internal.PersistentBag;
+
 import java.util.List;
 
 
@@ -30,7 +40,8 @@ public class Client implements Serializable {
 	private String villeCli;
 
 	//bi-directional many-to-one association to Sejour
-	@OneToMany(mappedBy="client")
+	@OneToMany(mappedBy="client", fetch=FetchType.LAZY)
+	@JsonSerialize(using = Sejour.JSonSejour.class)
 	private List<Sejour> sejours;
 
 	public Client() {
@@ -88,6 +99,7 @@ public class Client implements Serializable {
 		this.villeCli = villeCli;
 	}
 
+	@JsonSerialize(using = Sejour.JSonSejour.class)
 	public List<Sejour> getSejours() {
 		return this.sejours;
 	}
@@ -109,5 +121,4 @@ public class Client implements Serializable {
 
 		return sejour;
 	}
-
 }

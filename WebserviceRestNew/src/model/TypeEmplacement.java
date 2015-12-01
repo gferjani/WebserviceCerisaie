@@ -2,6 +2,9 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 import java.util.List;
 
 
@@ -23,7 +26,8 @@ public class TypeEmplacement implements Serializable {
 	private float tariftypepl;
 
 	//bi-directional many-to-one association to Emplacement
-	@OneToMany(mappedBy="typeEmplacement")
+	@OneToMany(mappedBy="typeEmplacement", fetch=FetchType.LAZY)
+	@JsonSerialize(using = Emplacement.JSonEmplacement.class)
 	private List<Emplacement> emplacements;
 
 	public TypeEmplacement() {

@@ -2,6 +2,9 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 import java.util.List;
 
 
@@ -13,6 +16,15 @@ import java.util.List;
 @NamedQuery(name="Emplacement.findAll", query="SELECT e FROM Emplacement e")
 public class Emplacement implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	public static class JSonEmplacement extends JSonListConverter<Emplacement>
+	{
+		@Override
+		protected int getID(Emplacement element)
+		{
+			return element.getNumEmpl();
+		}
+	}
 
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private int numEmpl;
@@ -27,7 +39,8 @@ public class Emplacement implements Serializable {
 	private TypeEmplacement typeEmplacement;
 
 	//bi-directional many-to-one association to Sejour
-	@OneToMany(mappedBy="emplacement")
+	@OneToMany(mappedBy="emplacement", fetch=FetchType.LAZY)
+	@JsonSerialize(using = Sejour.JSonSejour.class)
 	private List<Sejour> sejours;
 
 	public Emplacement() {

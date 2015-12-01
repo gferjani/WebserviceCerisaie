@@ -1,12 +1,19 @@
 package model;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+
+import org.codehaus.jackson.JsonGenerator;
+import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.map.JsonSerializer;
+import org.codehaus.jackson.map.SerializerProvider;
 
 
 /**
@@ -17,6 +24,23 @@ import javax.persistence.NamedQuery;
 @NamedQuery(name="Activite.findAll", query="SELECT a FROM Activite a")
 public class Activite implements Serializable {
 	private static final long serialVersionUID = 1L;
+
+	public static class JSonActivite extends JsonSerializer<List<Activite>>
+	{
+		@Override
+		public void serialize(List<Activite> elements, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException
+		{
+			jgen.writeStartArray();
+			for(Activite es : elements)
+				jgen.writeObject(getID(es));
+			jgen.writeEndArray();
+		}
+		
+		protected ActivitePK getID(Activite element)
+		{
+			return element.getId();
+		}
+	}
 
 	@EmbeddedId
 	private ActivitePK id;

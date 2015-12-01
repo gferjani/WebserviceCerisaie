@@ -2,6 +2,9 @@ package model;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import org.codehaus.jackson.map.annotate.JsonSerialize;
+
 import java.util.List;
 
 
@@ -24,7 +27,8 @@ public class Sport implements Serializable {
 	private String uniteTpsSport;
 
 	//bi-directional many-to-one association to Activite
-	@OneToMany(mappedBy="sport")
+	@OneToMany(mappedBy="sport", fetch=FetchType.LAZY)
+	@JsonSerialize(using = Activite.JSonActivite.class)
 	private List<Activite> activites;
 
 	public Sport() {

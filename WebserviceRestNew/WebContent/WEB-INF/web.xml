@@ -11,9 +11,14 @@
 	</welcome-file-list>
 	
 	<!-- Auto scan REST service -->
+	<!-- 
 	<context-param>
 		<param-name>resteasy.scan</param-name>
 		<param-value>true</param-value>
+	</context-param> -->
+	<context-param>
+		<param-name>resteasy.resources</param-name>
+		<param-value>webservice.WebService</param-value>
 	</context-param>
 	
 	<!-- this need same with resteasy servlet url-pattern -->
