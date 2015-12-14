@@ -4,10 +4,9 @@ import javax.persistence.EntityManager;
 
 import model.Client;
 import model.Sejour;
+import modelservice.ClientEntityService;
 
 import org.junit.Before;
-
-import service.ClientEntityService;
 
 public class TestFactureEntityService
 {

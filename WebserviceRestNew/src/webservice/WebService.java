@@ -1,16 +1,7 @@
 package webservice;
 
-import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -18,28 +9,233 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.joda.time.Instant;
-
-import model.Activite;
 import model.Client;
 import model.Emplacement;
 import model.Sejour;
-import service.ClientEntityService;
-import service.SejourEntityService;
+import model.Sport;
+import model.TypeEmplacement;
+import modelservice.ClientEntityService;
+import modelservice.EmplacementEntityService;
+import modelservice.SejourEntityService;
+import modelservice.SportEntityService;
+import modelservice.TypeEmplacementEntityService;
 
 @Path("/")
 public class WebService
 {
 	// http://localhost:8081/webserviceRest/webservice/client/get/1
 
+	/***************************************************
+	 * TYPE EMPLACEMENT
+	 ***************************************************/
+	
+	@GET
+	@Path("/typeemplacement/delete/{sid}")
+	@Produces("application/json")
+	public void typeemplacement_del(@PathParam("sid") String sid)
+	{
+		TypeEmplacementEntityService ses = new TypeEmplacementEntityService();
+		ses.supprimer(sid);
+	}
+
+	@POST
+	@Path("/typeemplacement/add")
+	@Produces("application/json")
+	public void typeemplacement_add(
+			@FormParam("libelle") 		String libelle,
+			@FormParam("tariftypepl") 	String tariftypepl)
+	{
+		TypeEmplacementEntityService ses = new TypeEmplacementEntityService();
+		TypeEmplacement s = new TypeEmplacement();
+		
+		s.setLibtypepl(libelle);
+		s.setTariftypepl(Float.parseFloat(tariftypepl));
+		
+		ses.ajouter(s);
+	}
+
+	@POST
+	@Path("/typeemplacement/edit/{sid}")
+	@Produces("application/json")
+	public void typeemplacement_edit(
+			@PathParam("sid") 			String sid,
+			@FormParam("libelle") 		String libelle,
+			@FormParam("tariftypepl") 	String tariftypepl)
+	{
+		TypeEmplacementEntityService ses = new TypeEmplacementEntityService();
+		TypeEmplacement s = ses.recherche(sid);
+
+		s.setLibtypepl(libelle);
+		s.setTariftypepl(Float.parseFloat(tariftypepl));
+		
+		ses.modifier(s);
+	}
+
+	@GET
+	@Path("/typeemplacement/get/{sid}")
+	@Produces("application/json")
+	public TypeEmplacement typeemplacement_get(@PathParam("sid") String sid)
+	{
+		TypeEmplacementEntityService ses = new TypeEmplacementEntityService();
+		return ses.recherche(sid);
+	}
+
+	@GET
+	@Path("/typeemplacement/getall")
+	@Produces("application/json")
+	public List<TypeEmplacement> typeemplacement_all()
+	{
+		TypeEmplacementEntityService ses = new TypeEmplacementEntityService();
+		return ses.rechercheTous();
+	}
+
+	/***************************************************
+	 * EMPLACEMENT
+	 ***************************************************/
+	
+	@GET
+	@Path("/emplacement/delete/{sid}")
+	@Produces("application/json")
+	public void emplacement_del(@PathParam("sid") String sid)
+	{
+		EmplacementEntityService ses = new EmplacementEntityService();
+		ses.supprimer(sid);
+	}
+
+	@POST
+	@Path("/emplacement/add")
+	@Produces("application/json")
+	public void emplacement_add(
+			@FormParam("nbPersMaxEmpl") 	String nbPersMaxEmpl,
+			@FormParam("surfaceEmpl") 		String surfaceEmpl,
+			@FormParam("typeEmplacement") 	String typeEmplacement)
+	{
+		EmplacementEntityService ses = new EmplacementEntityService();
+		Emplacement s = new Emplacement();
+
+		s.setNbPersMaxEmpl(Integer.parseInt(nbPersMaxEmpl));
+		s.setSurfaceEmpl(Float.parseFloat(surfaceEmpl));
+		s.setTypeEmplacement(new TypeEmplacementEntityService().recherche(typeEmplacement));
+		
+		ses.ajouter(s);
+	}
+
+	@POST
+	@Path("/emplacement/edit/{sid}")
+	@Produces("application/json")
+	public void emplacement_edit(
+			@PathParam("sid") 				String sid,
+			@FormParam("nbPersMaxEmpl") 	String nbPersMaxEmpl,
+			@FormParam("surfaceEmpl") 		String surfaceEmpl,
+			@FormParam("typeEmplacement") 	String typeEmplacement)
+	{
+		EmplacementEntityService ses = new EmplacementEntityService();
+		Emplacement s = ses.recherche(sid);
+
+		s.setNbPersMaxEmpl(Integer.parseInt(nbPersMaxEmpl));
+		s.setSurfaceEmpl(Float.parseFloat(surfaceEmpl));
+		s.setTypeEmplacement(new TypeEmplacementEntityService().recherche(typeEmplacement));
+		
+		ses.modifier(s);
+	}
+
+	@GET
+	@Path("/emplacement/get/{sid}")
+	@Produces("application/json")
+	public Emplacement emplacement_get(@PathParam("sid") String sid)
+	{
+		EmplacementEntityService ses = new EmplacementEntityService();
+		return ses.recherche(sid);
+	}
+
+	@GET
+	@Path("/emplacement/getall")
+	@Produces("application/json")
+	public List<Emplacement> emplacement_all()
+	{
+		EmplacementEntityService ses = new EmplacementEntityService();
+		return ses.rechercheTous();
+	}
+
+	/***************************************************
+	 * SPORT
+	 ***************************************************/
+	
+	@GET
+	@Path("/sport/delete/{sid}")
+	@Produces("application/json")
+	public void sport_del(@PathParam("sid") String sid)
+	{
+		SportEntityService ses = new SportEntityService();
+		ses.supprimer(sid);
+	}
+
+	@POST
+	@Path("/sport/add")
+	@Produces("application/json")
+	public void sport_add(
+			@FormParam("libelle") 		String libelle,
+			@FormParam("tarifUnite") 	String tarifUnite,
+			@FormParam("uniteTpsSport") String uniteTpsSport)
+	{
+		SportEntityService ses = new SportEntityService();
+		Sport s = new Sport();
+
+		s.setLibelleSport(libelle);
+		s.setTarifUnite(Float.parseFloat(tarifUnite));
+		s.setUniteTpsSport(uniteTpsSport);
+		
+		ses.ajouter(s);
+	}
+
+	@POST
+	@Path("/sport/edit/{sid}")
+	@Produces("application/json")
+	public void sport_edit(
+			@PathParam("sid") 			String sid,
+			@FormParam("libelle") 		String libelle,
+			@FormParam("tarifUnite") 	String tarifUnite,
+			@FormParam("uniteTpsSport") String uniteTpsSport)
+	{
+		SportEntityService ses = new SportEntityService();
+		Sport s = ses.recherche(sid);
+
+		s.setLibelleSport(libelle);
+		s.setTarifUnite(Float.parseFloat(tarifUnite));
+		s.setUniteTpsSport(uniteTpsSport);
+		
+		ses.modifier(s);
+	}
+
+	@GET
+	@Path("/sport/get/{sid}")
+	@Produces("application/json")
+	public Sport sport_get(@PathParam("sid") String sid)
+	{
+		SportEntityService ses = new SportEntityService();
+		return ses.recherche(sid);
+	}
+
+	@GET
+	@Path("/sport/getall")
+	@Produces("application/json")
+	public List<Sport> sport_all()
+	{
+		SportEntityService ses = new SportEntityService();
+		return ses.rechercheTous();
+	}
+
+	/***************************************************
+	 * SEJOUR
+	 ***************************************************/
+	
 	@GET
 	@Path("/sejour/delete/{sid}")
 	@Produces("application/json")
 	public void sejour_del(@PathParam("sid") String sid)
 	{
 		SejourEntityService ses = new SejourEntityService();
-		ses.supprimerSejour(Integer.parseInt(sid));
+		ses.supprimer(sid);
 	}
 
 	@POST
@@ -58,12 +254,13 @@ public class WebService
 		s.setDatedebSej(org.joda.time.DateTime.parse(datedebSej).toDate());
 		s.setDateFinSej(org.joda.time.DateTime.parse(dateFinSej).toDate());
 		s.setNbPersonnes(Integer.parseInt(nbPersonnes));
-		if(!client.isEmpty())
-			s.setClient(new ClientEntityService().rechercheClient(Integer.parseInt(client)));
-		if(!emplacement.isEmpty())
-			; // TODO : Set emplacement
 		
-		ses.ajoutSejour(s);
+		if(!client.isEmpty())
+			s.setClient(new ClientEntityService().recherche(client));
+		if(!emplacement.isEmpty())
+			s.setEmplacement(new EmplacementEntityService().recherche(emplacement));
+		
+		ses.ajouter(s);
 	}
 
 	@POST
@@ -78,17 +275,18 @@ public class WebService
 			@FormParam("emplacement") 	String emplacement)
 	{
 		SejourEntityService ses = new SejourEntityService();
-		Sejour s = ses.rechercheSejour(Integer.parseInt(sid));
+		Sejour s = ses.recherche(sid);
 		
 		s.setDatedebSej(org.joda.time.DateTime.parse(datedebSej).toDate());
 		s.setDateFinSej(org.joda.time.DateTime.parse(dateFinSej).toDate());
 		s.setNbPersonnes(Integer.parseInt(nbPersonnes));
-		if(!client.isEmpty())
-			s.setClient(new ClientEntityService().rechercheClient(Integer.parseInt(client)));
-		if(!emplacement.isEmpty())
-			; // TODO : Set emplacement
 		
-		ses.ajoutSejour(s);
+		if(!client.isEmpty())
+			s.setClient(new ClientEntityService().recherche(client));
+		if(!emplacement.isEmpty())
+			s.setEmplacement(new EmplacementEntityService().recherche(emplacement));
+		
+		ses.modifier(s);
 	}
 
 	@GET
@@ -97,7 +295,7 @@ public class WebService
 	public Sejour sejour_get(@PathParam("sid") String sid)
 	{
 		SejourEntityService ses = new SejourEntityService();
-		return ses.rechercheSejour(Integer.parseInt(sid));
+		return ses.recherche(sid);
 	}
 
 	@GET
@@ -106,11 +304,14 @@ public class WebService
 	public List<Sejour> sejour_all()
 	{
 		SejourEntityService ses = new SejourEntityService();
-		return ses.rechercheTousSejour();
+		return ses.rechercheTous();
 	}
 	
 	
 	
+	/***************************************************
+	 * CLIENT
+	 ***************************************************/
 	
 
 	@GET
@@ -119,7 +320,7 @@ public class WebService
 	public void client_del(@PathParam("sid") String sid)
 	{
 		ClientEntityService ces = new ClientEntityService();
-		ces.supprimerClient(Integer.parseInt(sid));
+		ces.supprimer(sid);
 	}
 
 	@POST
@@ -141,7 +342,7 @@ public class WebService
 		c.setNumPieceCli(numPieceCli);
 		c.setPieceCli(pieceCli);
 		c.setVilleCli(villeCli);
-		ces.ajoutClient(c);
+		ces.ajouter(c);
 	}
 
 	@POST
@@ -157,14 +358,14 @@ public class WebService
 			@FormParam("villeCli") 		String villeCli)
 	{
 		ClientEntityService ces = new ClientEntityService();
-		Client c = ces.rechercheClient(Integer.parseInt(sid));
+		Client c = ces.recherche(sid);
 		c.setAdrRueCli(adrRueCli);
 		c.setCpCli(cpCli);
 		c.setNomCli(nomCli);
 		c.setNumPieceCli(numPieceCli);
 		c.setPieceCli(pieceCli);
 		c.setVilleCli(villeCli);
-		ces.modifierClient(c);
+		ces.modifier(c);
 	}
 
 	@GET
@@ -173,7 +374,7 @@ public class WebService
 	public Client client_get(@PathParam("sid") String sid)
 	{
 		ClientEntityService ces = new ClientEntityService();
-		return ces.rechercheClient(Integer.parseInt(sid));
+		return ces.recherche(sid);
 	}
 
 	@GET
@@ -182,6 +383,6 @@ public class WebService
 	public List<Client> client_all()
 	{
 		ClientEntityService ces = new ClientEntityService();
-		return ces.rechercheTousClient();
+		return ces.rechercheTous();
 	}
 }

@@ -14,11 +14,10 @@ import javax.persistence.criteria.Root;
 import javax.transaction.Transactional;
 
 import model.Client;
+import modelservice.ClientEntityService;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import service.ClientEntityService;
 
  
 public class TestClientEntityService
@@ -63,7 +62,7 @@ public class TestClientEntityService
 	public void ajoutClient()
 	{
 		//a test
-		int id = service.ajoutClient(client);
+		int id = service.ajouter(client);
 		//pour tester
 		Client resultat=customRecherche(id);
 		//comparaison résultat
@@ -79,7 +78,7 @@ public class TestClientEntityService
 	public void rechercheClient()
 	{
 		int id=13;
-		Client resultat=service.rechercheClient(id);
+		Client resultat=service.recherche(id);
 		//comparaison résultat
 		assertEquals("Les client ne sont pas les même",client.getAdrRueCli(), resultat.getAdrRueCli());
 		assertEquals("Les client ne sont pas les même",client.getCpCli(), resultat.getCpCli());
@@ -95,9 +94,9 @@ public class TestClientEntityService
 	public void modifierClient()
 	{
 		//a test
-		int id = service.ajoutClient(client);
+		int id = service.ajouter(client);
 		client.setNomCli("Bob");
-		service.modifierClient(client);
+		service.modifier(client);
 		//pour tester
 		Client resultat=customRecherche(id);
 		assertEquals("Les client ne sont pas les même","Bob", resultat.getNomCli());
@@ -108,8 +107,8 @@ public class TestClientEntityService
 	public void supprimerClient()
 	{
 		//a test
-		int id = service.ajoutClient(client);
-		service.supprimerClient(client.getNumCli());
+		int id = service.ajouter(client);
+		service.supprimer(client.getNumCli());
 		//pour tester
 		Client resultat=customRecherche(id);
 		assertEquals("Le client n'a pas été supprimé",null, resultat);
@@ -118,7 +117,7 @@ public class TestClientEntityService
 	public void rechercheTousClient()
 	{
 		//a test
-		List<Client> clients=service.rechercheTousClient();
+		List<Client> clients=service.rechercheTous();
 		Client resultat=clients.get(12);
 		assertEquals("Les client ne sont pas les même",client.getAdrRueCli(), resultat.getAdrRueCli());
 		assertEquals("Les client ne sont pas les même",client.getCpCli(), resultat.getCpCli());
