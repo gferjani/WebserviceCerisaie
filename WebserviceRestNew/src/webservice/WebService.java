@@ -376,6 +376,15 @@ public class WebService
 		ClientEntityService ces = new ClientEntityService();
 		return ces.recherche(sid);
 	}
+	
+	@GET
+	@Path("/client/find/{sname}")
+	@Produces("application/json")
+	public List<Client> client_find(@PathParam("sname") String sname)
+	{
+		ClientEntityService ces = new ClientEntityService();
+		return ces.findByNom(sname);
+	}
 
 	@GET
 	@Path("/client/getall")

@@ -8,6 +8,9 @@ import javax.persistence.EntityTransaction;
 import model.Client;
 import model.Sport;
 
+/*
+ * TO DELETE
+ */
 public class SportEntityService extends EntityService
 {
 	public List<Sport> rechercheTousSport()

@@ -8,6 +8,9 @@ import javax.persistence.Persistence;
 
 import model.Client;
 
+/*
+ * TO DELETE
+ */
 public class ClientEntityService extends EntityService
 {
 	public Client rechercheClient(int id)

@@ -8,6 +8,9 @@ import javax.persistence.EntityTransaction;
 import model.Client;
 import model.Sejour;
 
+/*
+ * TO DELETE
+ */
 public class SejourEntityService extends EntityService
 {
 	public Sejour rechercheSejour(int id)

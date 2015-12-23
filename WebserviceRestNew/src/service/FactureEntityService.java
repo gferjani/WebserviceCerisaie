@@ -7,6 +7,9 @@ import model.Emplacement;
 import model.Sejour;
 import model.TypeEmplacement;
 
+/* 
+ * TO DELETE
+ */
 public class FactureEntityService extends EntityService
 {
 	public float facturationEmplacement(int numSej)
