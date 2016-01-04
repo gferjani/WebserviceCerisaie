@@ -9,10 +9,17 @@ public abstract class EntityService
 {
 	protected EntityManager entitymanager;
 	protected EntityManagerFactory emf;	
+	
 	public EntityTransaction startTransaction()
 	{
-		emf=Persistence.createEntityManagerFactory("map");
-		entitymanager=emf.createEntityManager();
+		emf = Persistence.createEntityManagerFactory("map");
+		entitymanager = emf.createEntityManager();
 		return entitymanager.getTransaction();
+	}
+	
+	public void close()
+	{
+		entitymanager.close();
+		emf.close();
 	}
 }

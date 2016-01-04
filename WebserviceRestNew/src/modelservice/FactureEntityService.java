@@ -3,9 +3,7 @@ package modelservice;
 import javax.persistence.EntityTransaction;
 
 import metier.Calcul;
-import model.Emplacement;
 import model.Sejour;
-import model.TypeEmplacement;
 import service.EntityService;
 
 public class FactureEntityService extends EntityService
@@ -18,10 +16,7 @@ public class FactureEntityService extends EntityService
 			transac.begin();
 			
 			Sejour sejour = entitymanager.find(Sejour.class, numSej);
-			Emplacement emplacement = entitymanager.find(Emplacement.class, sejour.getEmplacement());
-			TypeEmplacement typeEmplacement = entitymanager.find(TypeEmplacement.class, emplacement.getTypeEmplacement());
-			
-			return Calcul.calculFactureEmplacement(sejour, typeEmplacement);
+			return Calcul.calculPrixSejour(sejour);
 		}
 		finally
 		{

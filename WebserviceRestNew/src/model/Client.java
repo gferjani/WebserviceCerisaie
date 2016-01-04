@@ -1,16 +1,9 @@
 package model;
 
-import java.io.IOException;
 import java.io.Serializable;
 import javax.persistence.*;
 
-import org.codehaus.jackson.JsonGenerator;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.annotate.JsonValue;
-import org.codehaus.jackson.map.JsonSerializer;
-import org.codehaus.jackson.map.SerializerProvider;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.hibernate.collection.internal.PersistentBag;
 
 import java.util.List;
 

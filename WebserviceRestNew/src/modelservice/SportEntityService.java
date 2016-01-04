@@ -11,7 +11,7 @@ public class SportEntityService extends DataEntityService<Sport>
 	}
 
 	@Override
-	protected int getId(Sport entity)
+	protected Integer getId(Sport entity)
 	{
 		return entity.getCodeSport();
 	}

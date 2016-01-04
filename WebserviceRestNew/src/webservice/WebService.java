@@ -1,7 +1,11 @@
 package webservice;
 
+import java.sql.Date;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -9,11 +13,16 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import org.joda.time.Instant;
+
+import model.Activite;
+import model.ActivitePK;
 import model.Client;
 import model.Emplacement;
 import model.Sejour;
 import model.Sport;
 import model.TypeEmplacement;
+import modelservice.ActiviteEntityService;
 import modelservice.ClientEntityService;
 import modelservice.EmplacementEntityService;
 import modelservice.SejourEntityService;
@@ -24,6 +33,96 @@ import modelservice.TypeEmplacementEntityService;
 public class WebService
 {
 	// http://localhost:8081/webserviceRest/webservice/client/get/1
+
+	/***************************************************
+	 * ACTIVITE
+	 ***************************************************/
+
+	protected ActivitePK toActivitePK(
+			@PathParam("scodeSport") 	String scodeSport,
+			@PathParam("sdateJour") 	String sdateJour,
+			@PathParam("snumSej") 		String snumSej)
+	{
+		ActivitePK key = new ActivitePK();
+
+		key.setCodeSport(Integer.parseInt(scodeSport));
+		key.setDateJour(Instant.parse(sdateJour).toDate());
+		key.setNumSej(Integer.parseInt(snumSej));
+		
+		return key;
+	}
+
+	@GET
+	@Path("/activite/delete/{scodeSport}/{sdateJour}/{snumSej}")
+	@Produces("application/json")
+	public void activite_del(
+			@PathParam("scodeSport") 	String scodeSport,
+			@PathParam("sdateJour") 	String sdateJour,
+			@PathParam("snumSej") 		String snumSej)
+	{
+		ActiviteEntityService ses = new ActiviteEntityService();
+		ses.supprimer(toActivitePK(scodeSport, sdateJour, snumSej));
+	}
+
+	@POST
+	@Path("/activite/add")
+	@Produces("application/json")
+	public void activite_add(
+			@FormParam("nbloc") 		String nbloc,
+			@FormParam("sejour") 		String sejour,
+			@FormParam("sport") 		String sport)
+	{
+		ActiviteEntityService ses = new ActiviteEntityService();
+		Activite s = new Activite();
+
+		s.setNbloc(Integer.parseInt(nbloc));
+		s.setSejour(new SejourEntityService().recherche(sejour));
+		s.setSport(new SportEntityService().recherche(sport));
+		
+		ses.ajouter(s);
+	}
+
+	@POST
+	@Path("/activite/edit/{scodeSport}/{sdateJour}/{snumSej}")
+	@Produces("application/json")
+	public void activite_edit(
+			@PathParam("scodeSport") 	String scodeSport,
+			@PathParam("sdateJour") 	String sdateJour,
+			@PathParam("snumSej") 		String snumSej,
+			@FormParam("nbloc") 		String nbloc,
+			@FormParam("sejour") 		String sejour,
+			@FormParam("sport") 		String sport)
+	{
+		ActiviteEntityService ses = new ActiviteEntityService();
+		Activite s = ses.recherche(toActivitePK(scodeSport, sdateJour, snumSej));
+
+		s.setNbloc(Integer.parseInt(nbloc));
+		s.setSejour(new SejourEntityService().recherche(sejour));
+		s.setSport(new SportEntityService().recherche(sport));
+		
+		ses.modifier(s);
+	}
+
+	@GET
+	@Path("/activite/get/{scodeSport}/{sdateJour}/{snumSej}")
+	@Produces("application/json")
+	public Activite activite_get(
+			@PathParam("scodeSport") 	String scodeSport,
+			@PathParam("sdateJour") 	String sdateJour,
+			@PathParam("snumSej") 		String snumSej)
+	{
+		ActiviteEntityService ses = new ActiviteEntityService();
+		return ses.recherche(toActivitePK(scodeSport, sdateJour, snumSej));
+	}
+
+	@GET
+	@Path("/activite/getall")
+	@Produces("application/json")
+	public List<Activite> activite_all()
+	{
+		ActiviteEntityService ses = new ActiviteEntityService();
+		return ses.rechercheTous();
+	}
 
 	/***************************************************
 	 * TYPE EMPLACEMENT

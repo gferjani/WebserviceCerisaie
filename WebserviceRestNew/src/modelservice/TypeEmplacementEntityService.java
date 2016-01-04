@@ -11,7 +11,7 @@ public class TypeEmplacementEntityService extends DataEntityService<TypeEmplacem
 	}
 
 	@Override
-	protected int getId(TypeEmplacement entity)
+	protected Integer getId(TypeEmplacement entity)
 	{
 		return entity.getCodeTypeE();
 	}

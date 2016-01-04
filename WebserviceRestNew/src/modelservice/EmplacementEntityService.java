@@ -11,7 +11,7 @@ public class EmplacementEntityService extends DataEntityService<Emplacement>
 	}
 
 	@Override
-	protected int getId(Emplacement entity)
+	protected Integer getId(Emplacement entity)
 	{
 		return entity.getNumEmpl();
 	}

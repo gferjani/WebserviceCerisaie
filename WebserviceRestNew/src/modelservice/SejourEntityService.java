@@ -11,7 +11,7 @@ public class SejourEntityService extends DataEntityService<Sejour>
 	}
 
 	@Override
-	protected int getId(Sejour entity)
+	protected Integer getId(Sejour entity)
 	{
 		return entity.getNumSej();
 	}
