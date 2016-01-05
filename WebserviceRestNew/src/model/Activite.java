@@ -14,6 +14,7 @@ import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonProcessingException;
 import org.codehaus.jackson.map.JsonSerializer;
 import org.codehaus.jackson.map.SerializerProvider;
+import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 
 /**
@@ -25,7 +26,7 @@ import org.codehaus.jackson.map.SerializerProvider;
 public class Activite implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public static class JSonActivite extends JsonSerializer<List<Activite>>
+	public static class JSonListActivite extends JsonSerializer<List<Activite>>
 	{
 		@Override
 		public void serialize(List<Activite> elements, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException
@@ -50,11 +51,13 @@ public class Activite implements Serializable {
 	//bi-directional many-to-one association to Sport
 	@ManyToOne
 	@JoinColumn(name="CodeSport")
+	@JsonSerialize(using = Sport.JSonSport.class)
 	private Sport sport;
 
 	//bi-directional many-to-one association to Sejour
 	@ManyToOne
 	@JoinColumn(name="NumSej")
+	@JsonSerialize(using = Sejour.JSonSejour.class)
 	private Sejour sejour;
 
 	public Activite() {

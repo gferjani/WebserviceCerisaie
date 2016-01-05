@@ -18,7 +18,15 @@ import java.util.List;
 public class Sejour implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	public static class JSonSejour extends JSonListConverter<Sejour>
+	public static class JSonSejour extends JSonConverter<Sejour>
+	{
+		@Override
+		protected int getID(Sejour element)
+		{
+			return element.getNumSej();
+		}
+	}
+	public static class JSonListSejour extends JSonListConverter<Sejour>
 	{
 		@Override
 		protected int getID(Sejour element)
@@ -40,17 +48,19 @@ public class Sejour implements Serializable {
 
 	//bi-directional many-to-one association to Activite
 	@OneToMany(mappedBy="sejour", fetch=FetchType.LAZY)
-	@JsonSerialize(using = Activite.JSonActivite.class)
+	@JsonSerialize(using = Activite.JSonListActivite.class)
 	private List<Activite> activites;
 
 	//bi-directional many-to-one association to Client
 	@ManyToOne
 	@JoinColumn(name="NumCli")
+	@JsonSerialize(using = Client.JSonClient.class)
 	private Client client;
 
 	//bi-directional many-to-one association to Emplacement
 	@ManyToOne
 	@JoinColumn(name="NumEmpl")
+	@JsonSerialize(using = Emplacement.JSonEmplacement.class)
 	private Emplacement emplacement;
 
 	public Sejour() {

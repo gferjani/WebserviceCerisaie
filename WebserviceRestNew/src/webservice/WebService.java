@@ -55,37 +55,53 @@ public class WebService
 	@GET
 	@Path("/activite/delete/{scodeSport}/{sdateJour}/{snumSej}")
 	@Produces("application/json")
-	public void activite_del(
+	public WebServiceAnswer activite_del(
 			@PathParam("scodeSport") 	String scodeSport,
 			@PathParam("sdateJour") 	String sdateJour,
 			@PathParam("snumSej") 		String snumSej)
 	{
-		ActiviteEntityService ses = new ActiviteEntityService();
-		ses.supprimer(toActivitePK(scodeSport, sdateJour, snumSej));
+		try
+		{
+			ActiviteEntityService ses = new ActiviteEntityService();
+			ses.supprimer(toActivitePK(scodeSport, sdateJour, snumSej));
+			return WebServiceAnswer.createValid();
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@POST
 	@Path("/activite/add")
 	@Produces("application/json")
-	public void activite_add(
+	public WebServiceAnswer activite_add(
 			@FormParam("nbloc") 		String nbloc,
 			@FormParam("sejour") 		String sejour,
 			@FormParam("sport") 		String sport)
 	{
-		ActiviteEntityService ses = new ActiviteEntityService();
-		Activite s = new Activite();
-
-		s.setNbloc(Integer.parseInt(nbloc));
-		s.setSejour(new SejourEntityService().recherche(sejour));
-		s.setSport(new SportEntityService().recherche(sport));
-		
-		ses.ajouter(s);
+		try
+		{
+			ActiviteEntityService ses = new ActiviteEntityService();
+			Activite s = new Activite();
+	
+			s.setNbloc(Integer.parseInt(nbloc));
+			s.setSejour(new SejourEntityService().recherche(sejour));
+			s.setSport(new SportEntityService().recherche(sport));
+			
+			ses.ajouter(s);
+			return WebServiceAnswer.createValid();
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@POST
 	@Path("/activite/edit/{scodeSport}/{sdateJour}/{snumSej}")
 	@Produces("application/json")
-	public void activite_edit(
+	public WebServiceAnswer activite_edit(
 			@PathParam("scodeSport") 	String scodeSport,
 			@PathParam("sdateJour") 	String sdateJour,
 			@PathParam("snumSej") 		String snumSej,
@@ -93,35 +109,57 @@ public class WebService
 			@FormParam("sejour") 		String sejour,
 			@FormParam("sport") 		String sport)
 	{
-		ActiviteEntityService ses = new ActiviteEntityService();
-		Activite s = ses.recherche(toActivitePK(scodeSport, sdateJour, snumSej));
-
-		s.setNbloc(Integer.parseInt(nbloc));
-		s.setSejour(new SejourEntityService().recherche(sejour));
-		s.setSport(new SportEntityService().recherche(sport));
-		
-		ses.modifier(s);
+		try
+		{
+			ActiviteEntityService ses = new ActiviteEntityService();
+			Activite s = ses.recherche(toActivitePK(scodeSport, sdateJour, snumSej));
+	
+			s.setNbloc(Integer.parseInt(nbloc));
+			s.setSejour(new SejourEntityService().recherche(sejour));
+			s.setSport(new SportEntityService().recherche(sport));
+			
+			ses.modifier(s);
+			return WebServiceAnswer.createValid();
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@GET
 	@Path("/activite/get/{scodeSport}/{sdateJour}/{snumSej}")
 	@Produces("application/json")
-	public Activite activite_get(
+	public WebServiceAnswer activite_get(
 			@PathParam("scodeSport") 	String scodeSport,
 			@PathParam("sdateJour") 	String sdateJour,
 			@PathParam("snumSej") 		String snumSej)
 	{
-		ActiviteEntityService ses = new ActiviteEntityService();
-		return ses.recherche(toActivitePK(scodeSport, sdateJour, snumSej));
+		try
+		{
+			ActiviteEntityService ses = new ActiviteEntityService();
+			return WebServiceAnswer.createValid(ses.recherche(toActivitePK(scodeSport, sdateJour, snumSej)));
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@GET
 	@Path("/activite/getall")
 	@Produces("application/json")
-	public List<Activite> activite_all()
+	public WebServiceAnswer activite_all()
 	{
-		ActiviteEntityService ses = new ActiviteEntityService();
-		return ses.rechercheTous();
+		try
+		{
+			ActiviteEntityService ses = new ActiviteEntityService();
+			return WebServiceAnswer.createValid(ses.rechercheTous());
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	/***************************************************
@@ -131,61 +169,99 @@ public class WebService
 	@GET
 	@Path("/typeemplacement/delete/{sid}")
 	@Produces("application/json")
-	public void typeemplacement_del(@PathParam("sid") String sid)
+	public WebServiceAnswer typeemplacement_del(@PathParam("sid") String sid)
 	{
-		TypeEmplacementEntityService ses = new TypeEmplacementEntityService();
-		ses.supprimer(sid);
+		try
+		{
+			TypeEmplacementEntityService ses = new TypeEmplacementEntityService();
+			ses.supprimer(sid);
+			return WebServiceAnswer.createValid();
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@POST
 	@Path("/typeemplacement/add")
 	@Produces("application/json")
-	public void typeemplacement_add(
+	public WebServiceAnswer typeemplacement_add(
 			@FormParam("libelle") 		String libelle,
 			@FormParam("tariftypepl") 	String tariftypepl)
 	{
-		TypeEmplacementEntityService ses = new TypeEmplacementEntityService();
-		TypeEmplacement s = new TypeEmplacement();
-		
-		s.setLibtypepl(libelle);
-		s.setTariftypepl(Float.parseFloat(tariftypepl));
-		
-		ses.ajouter(s);
+		try
+		{
+			TypeEmplacementEntityService ses = new TypeEmplacementEntityService();
+			TypeEmplacement s = new TypeEmplacement();
+			
+			s.setLibtypepl(libelle);
+			s.setTariftypepl(Float.parseFloat(tariftypepl));
+			
+			ses.ajouter(s);
+			return WebServiceAnswer.createValid();
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@POST
 	@Path("/typeemplacement/edit/{sid}")
 	@Produces("application/json")
-	public void typeemplacement_edit(
+	public WebServiceAnswer typeemplacement_edit(
 			@PathParam("sid") 			String sid,
 			@FormParam("libelle") 		String libelle,
 			@FormParam("tariftypepl") 	String tariftypepl)
 	{
-		TypeEmplacementEntityService ses = new TypeEmplacementEntityService();
-		TypeEmplacement s = ses.recherche(sid);
-
-		s.setLibtypepl(libelle);
-		s.setTariftypepl(Float.parseFloat(tariftypepl));
-		
-		ses.modifier(s);
+		try
+		{
+			TypeEmplacementEntityService ses = new TypeEmplacementEntityService();
+			TypeEmplacement s = ses.recherche(sid);
+	
+			s.setLibtypepl(libelle);
+			s.setTariftypepl(Float.parseFloat(tariftypepl));
+			
+			ses.modifier(s);
+			return WebServiceAnswer.createValid();
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@GET
 	@Path("/typeemplacement/get/{sid}")
 	@Produces("application/json")
-	public TypeEmplacement typeemplacement_get(@PathParam("sid") String sid)
+	public WebServiceAnswer typeemplacement_get(@PathParam("sid") String sid)
 	{
-		TypeEmplacementEntityService ses = new TypeEmplacementEntityService();
-		return ses.recherche(sid);
+		try
+		{
+			TypeEmplacementEntityService ses = new TypeEmplacementEntityService();
+			return WebServiceAnswer.createValid(ses.recherche(sid));
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@GET
 	@Path("/typeemplacement/getall")
 	@Produces("application/json")
-	public List<TypeEmplacement> typeemplacement_all()
+	public WebServiceAnswer typeemplacement_all()
 	{
-		TypeEmplacementEntityService ses = new TypeEmplacementEntityService();
-		return ses.rechercheTous();
+		try
+		{
+			TypeEmplacementEntityService ses = new TypeEmplacementEntityService();
+			return WebServiceAnswer.createValid(ses.rechercheTous());
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	/***************************************************
@@ -195,65 +271,103 @@ public class WebService
 	@GET
 	@Path("/emplacement/delete/{sid}")
 	@Produces("application/json")
-	public void emplacement_del(@PathParam("sid") String sid)
+	public WebServiceAnswer emplacement_del(@PathParam("sid") String sid)
 	{
-		EmplacementEntityService ses = new EmplacementEntityService();
-		ses.supprimer(sid);
+		try
+		{
+			EmplacementEntityService ses = new EmplacementEntityService();
+			ses.supprimer(sid);
+			return WebServiceAnswer.createValid();
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@POST
 	@Path("/emplacement/add")
 	@Produces("application/json")
-	public void emplacement_add(
+	public WebServiceAnswer emplacement_add(
 			@FormParam("nbPersMaxEmpl") 	String nbPersMaxEmpl,
 			@FormParam("surfaceEmpl") 		String surfaceEmpl,
 			@FormParam("typeEmplacement") 	String typeEmplacement)
 	{
-		EmplacementEntityService ses = new EmplacementEntityService();
-		Emplacement s = new Emplacement();
-
-		s.setNbPersMaxEmpl(Integer.parseInt(nbPersMaxEmpl));
-		s.setSurfaceEmpl(Float.parseFloat(surfaceEmpl));
-		s.setTypeEmplacement(new TypeEmplacementEntityService().recherche(typeEmplacement));
-		
-		ses.ajouter(s);
+		try
+		{
+			EmplacementEntityService ses = new EmplacementEntityService();
+			Emplacement s = new Emplacement();
+	
+			s.setNbPersMaxEmpl(Integer.parseInt(nbPersMaxEmpl));
+			s.setSurfaceEmpl(Float.parseFloat(surfaceEmpl));
+			s.setTypeEmplacement(new TypeEmplacementEntityService().recherche(typeEmplacement));
+			
+			ses.ajouter(s);
+			return WebServiceAnswer.createValid();
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@POST
 	@Path("/emplacement/edit/{sid}")
 	@Produces("application/json")
-	public void emplacement_edit(
+	public WebServiceAnswer emplacement_edit(
 			@PathParam("sid") 				String sid,
 			@FormParam("nbPersMaxEmpl") 	String nbPersMaxEmpl,
 			@FormParam("surfaceEmpl") 		String surfaceEmpl,
 			@FormParam("typeEmplacement") 	String typeEmplacement)
 	{
-		EmplacementEntityService ses = new EmplacementEntityService();
-		Emplacement s = ses.recherche(sid);
-
-		s.setNbPersMaxEmpl(Integer.parseInt(nbPersMaxEmpl));
-		s.setSurfaceEmpl(Float.parseFloat(surfaceEmpl));
-		s.setTypeEmplacement(new TypeEmplacementEntityService().recherche(typeEmplacement));
-		
-		ses.modifier(s);
+		try
+		{
+			EmplacementEntityService ses = new EmplacementEntityService();
+			Emplacement s = ses.recherche(sid);
+	
+			s.setNbPersMaxEmpl(Integer.parseInt(nbPersMaxEmpl));
+			s.setSurfaceEmpl(Float.parseFloat(surfaceEmpl));
+			s.setTypeEmplacement(new TypeEmplacementEntityService().recherche(typeEmplacement));
+			
+			ses.modifier(s);
+			return WebServiceAnswer.createValid();
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@GET
 	@Path("/emplacement/get/{sid}")
 	@Produces("application/json")
-	public Emplacement emplacement_get(@PathParam("sid") String sid)
+	public WebServiceAnswer emplacement_get(@PathParam("sid") String sid)
 	{
-		EmplacementEntityService ses = new EmplacementEntityService();
-		return ses.recherche(sid);
+		try
+		{
+			EmplacementEntityService ses = new EmplacementEntityService();
+			return WebServiceAnswer.createValid(ses.recherche(sid));
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@GET
 	@Path("/emplacement/getall")
 	@Produces("application/json")
-	public List<Emplacement> emplacement_all()
+	public WebServiceAnswer emplacement_all()
 	{
-		EmplacementEntityService ses = new EmplacementEntityService();
-		return ses.rechercheTous();
+		try
+		{
+			EmplacementEntityService ses = new EmplacementEntityService();
+			return WebServiceAnswer.createValid(ses.rechercheTous());
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	/***************************************************
@@ -263,65 +377,103 @@ public class WebService
 	@GET
 	@Path("/sport/delete/{sid}")
 	@Produces("application/json")
-	public void sport_del(@PathParam("sid") String sid)
+	public WebServiceAnswer sport_del(@PathParam("sid") String sid)
 	{
-		SportEntityService ses = new SportEntityService();
-		ses.supprimer(sid);
+		try
+		{
+			SportEntityService ses = new SportEntityService();
+			ses.supprimer(sid);
+			return WebServiceAnswer.createValid();
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@POST
 	@Path("/sport/add")
 	@Produces("application/json")
-	public void sport_add(
+	public WebServiceAnswer sport_add(
 			@FormParam("libelle") 		String libelle,
 			@FormParam("tarifUnite") 	String tarifUnite,
 			@FormParam("uniteTpsSport") String uniteTpsSport)
 	{
-		SportEntityService ses = new SportEntityService();
-		Sport s = new Sport();
-
-		s.setLibelleSport(libelle);
-		s.setTarifUnite(Float.parseFloat(tarifUnite));
-		s.setUniteTpsSport(uniteTpsSport);
-		
-		ses.ajouter(s);
+		try
+		{
+			SportEntityService ses = new SportEntityService();
+			Sport s = new Sport();
+	
+			s.setLibelleSport(libelle);
+			s.setTarifUnite(Float.parseFloat(tarifUnite));
+			s.setUniteTpsSport(uniteTpsSport);
+			
+			ses.ajouter(s);
+			return WebServiceAnswer.createValid();
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@POST
 	@Path("/sport/edit/{sid}")
 	@Produces("application/json")
-	public void sport_edit(
+	public WebServiceAnswer sport_edit(
 			@PathParam("sid") 			String sid,
 			@FormParam("libelle") 		String libelle,
 			@FormParam("tarifUnite") 	String tarifUnite,
 			@FormParam("uniteTpsSport") String uniteTpsSport)
 	{
-		SportEntityService ses = new SportEntityService();
-		Sport s = ses.recherche(sid);
-
-		s.setLibelleSport(libelle);
-		s.setTarifUnite(Float.parseFloat(tarifUnite));
-		s.setUniteTpsSport(uniteTpsSport);
-		
-		ses.modifier(s);
+		try
+		{
+			SportEntityService ses = new SportEntityService();
+			Sport s = ses.recherche(sid);
+	
+			s.setLibelleSport(libelle);
+			s.setTarifUnite(Float.parseFloat(tarifUnite));
+			s.setUniteTpsSport(uniteTpsSport);
+			
+			ses.modifier(s);
+			return WebServiceAnswer.createValid();
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@GET
 	@Path("/sport/get/{sid}")
 	@Produces("application/json")
-	public Sport sport_get(@PathParam("sid") String sid)
+	public WebServiceAnswer sport_get(@PathParam("sid") String sid)
 	{
-		SportEntityService ses = new SportEntityService();
-		return ses.recherche(sid);
+		try
+		{
+			SportEntityService ses = new SportEntityService();
+			return WebServiceAnswer.createValid(ses.recherche(sid));
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@GET
 	@Path("/sport/getall")
 	@Produces("application/json")
-	public List<Sport> sport_all()
+	public WebServiceAnswer sport_all()
 	{
-		SportEntityService ses = new SportEntityService();
-		return ses.rechercheTous();
+		try
+		{
+			SportEntityService ses = new SportEntityService();
+			return WebServiceAnswer.createValid(ses.rechercheTous());
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	/***************************************************
@@ -331,41 +483,57 @@ public class WebService
 	@GET
 	@Path("/sejour/delete/{sid}")
 	@Produces("application/json")
-	public void sejour_del(@PathParam("sid") String sid)
+	public WebServiceAnswer sejour_del(@PathParam("sid") String sid)
 	{
-		SejourEntityService ses = new SejourEntityService();
-		ses.supprimer(sid);
+		try
+		{
+			SejourEntityService ses = new SejourEntityService();
+			ses.supprimer(sid);
+			return WebServiceAnswer.createValid();
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@POST
 	@Path("/sejour/add")
 	@Produces("application/json")
-	public void sejour_add(
+	public WebServiceAnswer sejour_add(
 			@FormParam("datedebSej") 	String datedebSej,
 			@FormParam("dateFinSej") 	String dateFinSej,
 			@FormParam("nbPersonnes") 	String nbPersonnes,
 			@FormParam("client") 		String client,
 			@FormParam("emplacement") 	String emplacement)
 	{
-		SejourEntityService ses = new SejourEntityService();
-		Sejour s = new Sejour();
-		
-		s.setDatedebSej(org.joda.time.DateTime.parse(datedebSej).toDate());
-		s.setDateFinSej(org.joda.time.DateTime.parse(dateFinSej).toDate());
-		s.setNbPersonnes(Integer.parseInt(nbPersonnes));
-		
-		if(!client.isEmpty())
-			s.setClient(new ClientEntityService().recherche(client));
-		if(!emplacement.isEmpty())
-			s.setEmplacement(new EmplacementEntityService().recherche(emplacement));
-		
-		ses.ajouter(s);
+		try
+		{
+			SejourEntityService ses = new SejourEntityService();
+			Sejour s = new Sejour();
+			
+			s.setDatedebSej(org.joda.time.DateTime.parse(datedebSej).toDate());
+			s.setDateFinSej(org.joda.time.DateTime.parse(dateFinSej).toDate());
+			s.setNbPersonnes(Integer.parseInt(nbPersonnes));
+			
+			if(!client.isEmpty())
+				s.setClient(new ClientEntityService().recherche(client));
+			if(!emplacement.isEmpty())
+				s.setEmplacement(new EmplacementEntityService().recherche(emplacement));
+			
+			ses.ajouter(s);
+			return WebServiceAnswer.createValid();
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@POST
 	@Path("/sejour/edit/{sid}")
 	@Produces("application/json")
-	public void sejour_edit(
+	public WebServiceAnswer sejour_edit(
 			@PathParam("sid") 			String sid,
 			@FormParam("datedebSej") 	String datedebSej,
 			@FormParam("dateFinSej") 	String dateFinSej,
@@ -373,37 +541,59 @@ public class WebService
 			@FormParam("client") 		String client,
 			@FormParam("emplacement") 	String emplacement)
 	{
-		SejourEntityService ses = new SejourEntityService();
-		Sejour s = ses.recherche(sid);
-		
-		s.setDatedebSej(org.joda.time.DateTime.parse(datedebSej).toDate());
-		s.setDateFinSej(org.joda.time.DateTime.parse(dateFinSej).toDate());
-		s.setNbPersonnes(Integer.parseInt(nbPersonnes));
-		
-		if(!client.isEmpty())
-			s.setClient(new ClientEntityService().recherche(client));
-		if(!emplacement.isEmpty())
-			s.setEmplacement(new EmplacementEntityService().recherche(emplacement));
-		
-		ses.modifier(s);
+		try
+		{
+			SejourEntityService ses = new SejourEntityService();
+			Sejour s = ses.recherche(sid);
+			
+			s.setDatedebSej(org.joda.time.DateTime.parse(datedebSej).toDate());
+			s.setDateFinSej(org.joda.time.DateTime.parse(dateFinSej).toDate());
+			s.setNbPersonnes(Integer.parseInt(nbPersonnes));
+			
+			if(!client.isEmpty())
+				s.setClient(new ClientEntityService().recherche(client));
+			if(!emplacement.isEmpty())
+				s.setEmplacement(new EmplacementEntityService().recherche(emplacement));
+			
+			ses.modifier(s);
+			return WebServiceAnswer.createValid();
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@GET
 	@Path("/sejour/get/{sid}")
 	@Produces("application/json")
-	public Sejour sejour_get(@PathParam("sid") String sid)
+	public WebServiceAnswer sejour_get(@PathParam("sid") String sid)
 	{
-		SejourEntityService ses = new SejourEntityService();
-		return ses.recherche(sid);
+		try
+		{
+			SejourEntityService ses = new SejourEntityService();
+			return WebServiceAnswer.createValid(ses.recherche(sid));
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@GET
 	@Path("/sejour/getall")
 	@Produces("application/json")
-	public List<Sejour> sejour_all()
+	public WebServiceAnswer sejour_all()
 	{
-		SejourEntityService ses = new SejourEntityService();
-		return ses.rechercheTous();
+		try
+		{
+			SejourEntityService ses = new SejourEntityService();
+			return WebServiceAnswer.createValid(ses.rechercheTous());
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 	
 	
@@ -416,16 +606,24 @@ public class WebService
 	@GET
 	@Path("/client/delete/{sid}")
 	@Produces("application/json")
-	public void client_del(@PathParam("sid") String sid)
+	public WebServiceAnswer client_del(@PathParam("sid") String sid)
 	{
-		ClientEntityService ces = new ClientEntityService();
-		ces.supprimer(sid);
+		try
+		{
+			ClientEntityService ces = new ClientEntityService();
+			ces.supprimer(sid);
+			return WebServiceAnswer.createValid();
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@POST
 	@Path("/client/add")
 	@Produces("application/json")
-	public void client_add(
+	public WebServiceAnswer client_add(
 			@FormParam("adrRueCli") 	String adrRueCli,
 			@FormParam("cpCli") 		String cpCli,
 			@FormParam("nomCli") 		String nomCli,
@@ -433,21 +631,29 @@ public class WebService
 			@FormParam("pieceCli") 		String pieceCli,
 			@FormParam("villeCli") 		String villeCli)
 	{
-		ClientEntityService ces = new ClientEntityService();
-		Client c = new Client();
-		c.setAdrRueCli(adrRueCli);
-		c.setCpCli(cpCli);
-		c.setNomCli(nomCli);
-		c.setNumPieceCli(numPieceCli);
-		c.setPieceCli(pieceCli);
-		c.setVilleCli(villeCli);
-		ces.ajouter(c);
+		try
+		{
+			ClientEntityService ces = new ClientEntityService();
+			Client c = new Client();
+			c.setAdrRueCli(adrRueCli);
+			c.setCpCli(cpCli);
+			c.setNomCli(nomCli);
+			c.setNumPieceCli(numPieceCli);
+			c.setPieceCli(pieceCli);
+			c.setVilleCli(villeCli);
+			ces.ajouter(c);
+			return WebServiceAnswer.createValid();
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@POST
 	@Path("/client/edit/{sid}")
 	@Produces("application/json")
-	public void client_edit(
+	public WebServiceAnswer client_edit(
 			@PathParam("sid") 			String sid,
 			@FormParam("adrRueCli") 	String adrRueCli,
 			@FormParam("cpCli") 		String cpCli,
@@ -456,41 +662,70 @@ public class WebService
 			@FormParam("pieceCli") 		String pieceCli,
 			@FormParam("villeCli") 		String villeCli)
 	{
-		ClientEntityService ces = new ClientEntityService();
-		Client c = ces.recherche(sid);
-		c.setAdrRueCli(adrRueCli);
-		c.setCpCli(cpCli);
-		c.setNomCli(nomCli);
-		c.setNumPieceCli(numPieceCli);
-		c.setPieceCli(pieceCli);
-		c.setVilleCli(villeCli);
-		ces.modifier(c);
+		try
+		{
+			ClientEntityService ces = new ClientEntityService();
+			Client c = ces.recherche(sid);
+			c.setAdrRueCli(adrRueCli);
+			c.setCpCli(cpCli);
+			c.setNomCli(nomCli);
+			c.setNumPieceCli(numPieceCli);
+			c.setPieceCli(pieceCli);
+			c.setVilleCli(villeCli);
+			ces.modifier(c);
+			return WebServiceAnswer.createValid();
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@GET
 	@Path("/client/get/{sid}")
 	@Produces("application/json")
-	public Client client_get(@PathParam("sid") String sid)
+	public WebServiceAnswer client_get(@PathParam("sid") String sid)
 	{
-		ClientEntityService ces = new ClientEntityService();
-		return ces.recherche(sid);
+		try
+		{
+			ClientEntityService ces = new ClientEntityService();
+			return WebServiceAnswer.createValid(ces.recherche(sid));
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 	
 	@GET
 	@Path("/client/find/{sname}")
 	@Produces("application/json")
-	public List<Client> client_find(@PathParam("sname") String sname)
+	public WebServiceAnswer client_find(@PathParam("sname") String sname)
 	{
-		ClientEntityService ces = new ClientEntityService();
-		return ces.findByNom(sname);
+		try
+		{
+			ClientEntityService ces = new ClientEntityService();
+			return WebServiceAnswer.createValid(ces.findByNom(sname));
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 
 	@GET
 	@Path("/client/getall")
 	@Produces("application/json")
-	public List<Client> client_all()
+	public WebServiceAnswer client_all()
 	{
-		ClientEntityService ces = new ClientEntityService();
-		return ces.rechercheTous();
+		try
+		{
+			ClientEntityService ces = new ClientEntityService();
+			return WebServiceAnswer.createValid(ces.rechercheTous());
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid();
+		}
 	}
 }

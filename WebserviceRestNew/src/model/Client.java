@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -16,6 +17,15 @@ import java.util.List;
 @NamedQuery(name="Client.findAll", query="SELECT c FROM Client c")
 public class Client implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	public static class JSonClient extends JSonConverter<Client>
+	{
+		@Override
+		protected int getID(Client element)
+		{
+			return element.getNumCli();
+		}
+	}
 
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private int numCli;
@@ -34,7 +44,7 @@ public class Client implements Serializable {
 
 	//bi-directional many-to-one association to Sejour
 	@OneToMany(mappedBy="client", fetch=FetchType.LAZY)
-	@JsonSerialize(using = Sejour.JSonSejour.class)
+	@JsonSerialize(using = Sejour.JSonListSejour.class)
 	private List<Sejour> sejours;
 
 	public Client() {
@@ -92,7 +102,7 @@ public class Client implements Serializable {
 		this.villeCli = villeCli;
 	}
 
-	@JsonSerialize(using = Sejour.JSonSejour.class)
+	@JsonSerialize(using = Sejour.JSonListSejour.class)
 	public List<Sejour> getSejours() {
 		return this.sejours;
 	}

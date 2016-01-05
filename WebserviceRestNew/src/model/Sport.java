@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -17,6 +18,15 @@ import java.util.List;
 public class Sport implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	public static class JSonSport extends JSonConverter<Sport>
+	{
+		@Override
+		protected int getID(Sport element)
+		{
+			return element.getCodeSport();
+		}
+	}
+
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private int codeSport;
 
@@ -28,7 +38,7 @@ public class Sport implements Serializable {
 
 	//bi-directional many-to-one association to Activite
 	@OneToMany(mappedBy="sport", fetch=FetchType.LAZY)
-	@JsonSerialize(using = Activite.JSonActivite.class)
+	@JsonSerialize(using = Activite.JSonListActivite.class)
 	private List<Activite> activites;
 
 	public Sport() {

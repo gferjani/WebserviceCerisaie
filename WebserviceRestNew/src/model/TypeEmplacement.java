@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
@@ -17,6 +18,15 @@ import java.util.List;
 @NamedQuery(name="TypeEmplacement.findAll", query="SELECT t FROM TypeEmplacement t")
 public class TypeEmplacement implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	public static class JSonTypeEmplacement extends JSonConverter<TypeEmplacement>
+	{
+		@Override
+		protected int getID(TypeEmplacement element)
+		{
+			return element.getCodeTypeE();
+		}
+	}
 
 	@Id @GeneratedValue(strategy=GenerationType.AUTO)
 	private int codeTypeE;
@@ -27,7 +37,7 @@ public class TypeEmplacement implements Serializable {
 
 	//bi-directional many-to-one association to Emplacement
 	@OneToMany(mappedBy="typeEmplacement", fetch=FetchType.LAZY)
-	@JsonSerialize(using = Emplacement.JSonEmplacement.class)
+	@JsonSerialize(using = Emplacement.JSonListEmplacement.class)
 	private List<Emplacement> emplacements;
 
 	public TypeEmplacement() {
