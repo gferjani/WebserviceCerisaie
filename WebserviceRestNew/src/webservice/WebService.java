@@ -1,11 +1,5 @@
 package webservice;
-
-import java.sql.Date;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+	
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -31,9 +25,9 @@ import modelservice.TypeEmplacementEntityService;
 
 @Path("/")
 public class WebService
-{
+{	
 	// http://localhost:8081/webserviceRest/webservice/client/get/1
-
+	
 	/***************************************************
 	 * ACTIVITE
 	 ***************************************************/
@@ -68,7 +62,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -94,7 +88,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -123,7 +117,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -142,7 +136,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -158,7 +152,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -179,7 +173,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -203,7 +197,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -228,7 +222,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -244,7 +238,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -260,7 +254,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -281,7 +275,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -307,7 +301,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -334,7 +328,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -350,7 +344,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -366,7 +360,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -387,7 +381,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -413,7 +407,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -440,7 +434,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -456,7 +450,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -472,7 +466,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -493,7 +487,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -526,7 +520,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -560,7 +554,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -576,7 +570,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -592,7 +586,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 	
@@ -616,7 +610,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -646,7 +640,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -677,7 +671,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -693,7 +687,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 	
@@ -709,7 +703,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 
@@ -725,7 +719,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			return WebServiceAnswer.createInvalid();
+			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
 }

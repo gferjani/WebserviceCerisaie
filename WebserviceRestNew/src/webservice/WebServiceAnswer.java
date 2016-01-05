@@ -2,6 +2,8 @@ package webservice;
 
 import java.io.Serializable;
 
+import com.sun.jersey.api.NotFoundException;
+
 public class WebServiceAnswer<T> implements Serializable
 {
 	public WebServiceAnswer(T msg, boolean isValid)
@@ -10,17 +12,20 @@ public class WebServiceAnswer<T> implements Serializable
 		this.isValid = isValid;
 	}
 
-	public static <T> WebServiceAnswer<T> createValid(T msg)
+	public static <T> WebServiceAnswer createValid(T msg)
 	{
-		return new WebServiceAnswer<T>(msg, true);
+		if(msg == null)
+			return createInvalid(new NotFoundException());
+		else
+			return new WebServiceAnswer<T>(msg, true);
 	}
 	public static WebServiceAnswer<Boolean> createValid()
 	{
 		return createValid(true);
 	}
-	public static WebServiceAnswer<Boolean> createInvalid()
+	public static WebServiceAnswer<Throwable> createInvalid(Throwable ex)
 	{
-		return new WebServiceAnswer<Boolean>(false, false);
+		return new WebServiceAnswer<Throwable>(ex, false);
 	}
 	
 	private final T msg;
