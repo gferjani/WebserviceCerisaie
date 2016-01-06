@@ -79,6 +79,7 @@ public class Activite implements Serializable {
 		this.nbloc = nbloc;
 	}
 
+	@JsonSerialize(using = Sport.JSonSport.class)
 	public Sport getSport() {
 		return this.sport;
 	}
@@ -87,6 +88,7 @@ public class Activite implements Serializable {
 		this.sport = sport;
 	}
 
+	@JsonSerialize(using = Sejour.JSonSejour.class)
 	public Sejour getSejour() {
 		return this.sejour;
 	}

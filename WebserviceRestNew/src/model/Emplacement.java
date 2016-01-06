@@ -84,6 +84,7 @@ public class Emplacement implements Serializable {
 		this.typeEmplacement = typeEmplacement;
 	}
 
+	@JsonSerialize(using = Sejour.JSonListSejour.class)
 	public List<Sejour> getSejours() {
 		return this.sejours;
 	}

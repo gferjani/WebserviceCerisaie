@@ -64,6 +64,7 @@ public class TypeEmplacement implements Serializable {
 		this.tariftypepl = tariftypepl;
 	}
 
+	@JsonSerialize(using = Emplacement.JSonListEmplacement.class)
 	public List<Emplacement> getEmplacements() {
 		return this.emplacements;
 	}

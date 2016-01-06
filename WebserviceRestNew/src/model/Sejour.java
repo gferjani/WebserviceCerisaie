@@ -94,6 +94,7 @@ public class Sejour implements Serializable {
 		this.nbPersonnes = nbPersonnes;
 	}
 
+	@JsonSerialize(using = Activite.JSonListActivite.class)
 	public List<Activite> getActivites() {
 		return this.activites;
 	}
@@ -116,6 +117,7 @@ public class Sejour implements Serializable {
 		return activite;
 	}
 
+	@JsonSerialize(using = Client.JSonClient.class)
 	public Client getClient() {
 		return this.client;
 	}

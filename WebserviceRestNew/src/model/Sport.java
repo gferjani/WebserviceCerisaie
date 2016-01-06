@@ -73,6 +73,7 @@ public class Sport implements Serializable {
 		this.uniteTpsSport = uniteTpsSport;
 	}
 
+	@JsonSerialize(using = Activite.JSonListActivite.class)
 	public List<Activite> getActivites() {
 		return this.activites;
 	}
