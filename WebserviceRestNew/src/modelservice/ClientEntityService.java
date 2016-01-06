@@ -24,8 +24,8 @@ public class ClientEntityService extends DataEntityService<Client>
 	{
 		startTransaction().begin();
 		List<Client> clients = entitymanager
-					.createQuery("SELECT c FROM Client c WHERE c.nomCli LIKE '%:name%'", Client.class)
-					.setParameter("name", nom)
+					.createQuery("SELECT c FROM Client c WHERE c.nomCli LIKE :name", Client.class)
+					.setParameter("name", "%"+nom+"%")
 					.getResultList();
 		return clients;
 	}
