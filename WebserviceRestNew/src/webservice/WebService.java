@@ -60,14 +60,15 @@ public class WebService
 	public WebServiceAnswer activite_add(
 			@FormParam("sejour") 		String sejour,
 			@FormParam("sport") 		String sport,
-			@FormParam("date") 			String date)
+			@FormParam("date") 			String date,
+			@FormParam("nbUnite") 			String nbUnite)
 	{
 		try
 		{
 			ActiviteEntityService ses = new ActiviteEntityService();
 			
 			boolean modif = false;
-			int nblock = 1;
+			int nblock = Integer.valueOf(nbUnite);
 	
 			DateFormat format = new SimpleDateFormat("yyyy-MM-d", Locale.FRANCE);
 			Date d = format.parse(date);
@@ -77,7 +78,7 @@ public class WebService
 				//on essaye de trouver l'activité pour incrementer le nombre
 				s = ses.findBySportSejDate(Integer.valueOf(sport).intValue(), Integer.valueOf(sejour).intValue(), d);
 				
-				nblock = s.getNbloc() + 1;
+				nblock += s.getNbloc();
 				modif = true;
 			} catch (Exception e) {
 				//sinon on en créé une nouvelle
@@ -581,7 +582,6 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
-			System.out.println(ex);
 			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
