@@ -6,6 +6,7 @@ import model.Sejour;
 import model.Sport;
 import model.TypeEmplacement;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -25,9 +26,13 @@ public class Calcul
 		if(emp == null || emp.getTypeEmplacement() == null)
 			return 0;
 		
-		Period period = new Period(new DateTime(sejour.getDatedebSej()).toInstant(), new DateTime(sejour.getDateFinSej()));
+		Period period = new Period(new DateTime(sejour.getDatedebSej()), new DateTime(sejour.getDateFinSej()));
 		
-		return period.getDays() * sejour.getNbPersonnes() * emp.getTypeEmplacement().getTariftypepl();
+		double nbSecJour = 60 * 60 * 24;
+		double diffTime = (sejour.getDateFinSej().getTime() - sejour.getDatedebSej().getTime())/1000;
+		double nbJour = Math.ceil(diffTime / nbSecJour)+1;
+
+		return (float)nbJour * sejour.getNbPersonnes() * emp.getTypeEmplacement().getTariftypepl();
 	}
 	
 	/**
