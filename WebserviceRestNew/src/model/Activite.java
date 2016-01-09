@@ -2,13 +2,19 @@ package model;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.JsonProcessingException;
@@ -37,14 +43,14 @@ public class Activite implements Serializable {
 			jgen.writeEndArray();
 		}
 		
-		protected ActivitePK getID(Activite element)
+		protected int getID(Activite element)
 		{
 			return element.getId();
 		}
 	}
 
-	@EmbeddedId
-	private ActivitePK id;
+	@Id @GeneratedValue(strategy=GenerationType.AUTO)
+	private int idActivite;
 
 	private int nbloc;
 
@@ -59,16 +65,27 @@ public class Activite implements Serializable {
 	@JoinColumn(name="NumSej")
 	@JsonSerialize(using = Sejour.JSonSejour.class)
 	private Sejour sejour;
+	
+	@Temporal(TemporalType.DATE)
+	private Date DateJour;
 
 	public Activite() {
 	}
 
-	public ActivitePK getId() {
-		return this.id;
+	public int getId() {
+		return this.idActivite;
 	}
 
-	public void setId(ActivitePK id) {
-		this.id = id;
+	public void setId(int id) {
+		this.idActivite = id;
+	}
+	
+	public Date getDateJour() {
+		return this.DateJour;
+	}
+
+	public void setDateJour(Date DateJour) {
+		this.DateJour = DateJour;
 	}
 
 	public int getNbloc() {
@@ -79,7 +96,6 @@ public class Activite implements Serializable {
 		this.nbloc = nbloc;
 	}
 
-	@JsonSerialize(using = Sport.JSonSport.class)
 	public Sport getSport() {
 		return this.sport;
 	}

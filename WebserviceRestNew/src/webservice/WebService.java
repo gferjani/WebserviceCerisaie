@@ -1,5 +1,10 @@
 package webservice;
 	
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -7,10 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import org.joda.time.Instant;
-
 import model.Activite;
-import model.ActivitePK;
 import model.Client;
 import model.Emplacement;
 import model.Sejour;
@@ -26,38 +28,22 @@ import modelservice.TypeEmplacementEntityService;
 @Path("/")
 public class WebService
 {	
-	// http://localhost:8081/webserviceRest/webservice/client/get/1
+	// http://localhost:8080/webserviceRest/webservice/client/get/1
 	
 	/***************************************************
 	 * ACTIVITE
 	 ***************************************************/
 
-	protected ActivitePK toActivitePK(
-			@PathParam("scodeSport") 	String scodeSport,
-			@PathParam("sdateJour") 	String sdateJour,
-			@PathParam("snumSej") 		String snumSej)
-	{
-		ActivitePK key = new ActivitePK();
-
-		key.setCodeSport(Integer.parseInt(scodeSport));
-		key.setDateJour(Instant.parse(sdateJour).toDate());
-		key.setNumSej(Integer.parseInt(snumSej));
-		
-		return key;
-	}
-
 	@GET
-	@Path("/activite/delete/{scodeSport}/{sdateJour}/{snumSej}")
+	@Path("/activite/delete/{sid}")
 	@Produces("application/json")
 	public WebServiceAnswer activite_del(
-			@PathParam("scodeSport") 	String scodeSport,
-			@PathParam("sdateJour") 	String sdateJour,
-			@PathParam("snumSej") 		String snumSej)
+			@PathParam("sid") 	String sid)
 	{
 		try
 		{
 			ActiviteEntityService ses = new ActiviteEntityService();
-			ses.supprimer(toActivitePK(scodeSport, sdateJour, snumSej));
+			ses.supprimer(sid);
 			return WebServiceAnswer.createValid();
 		}
 		catch(Throwable ex)
@@ -70,20 +56,42 @@ public class WebService
 	@Path("/activite/add")
 	@Produces("application/json")
 	public WebServiceAnswer activite_add(
-			@FormParam("nbloc") 		String nbloc,
 			@FormParam("sejour") 		String sejour,
-			@FormParam("sport") 		String sport)
+			@FormParam("sport") 		String sport,
+			@FormParam("date") 			String date)
 	{
 		try
 		{
 			ActiviteEntityService ses = new ActiviteEntityService();
-			Activite s = new Activite();
+			
+			boolean modif = false;
+			int nblock = 1;
 	
-			s.setNbloc(Integer.parseInt(nbloc));
+			DateFormat format = new SimpleDateFormat("yyyy-MM-d", Locale.FRANCE);
+			Date d = format.parse(date);
+			
+			Activite s;
+			try {
+				//on essaye de trouver l'activité pour incrementer le nombre
+				s = ses.findBySportSejDate(Integer.valueOf(sport).intValue(), Integer.valueOf(sejour).intValue(), d);
+				
+				nblock = s.getNbloc() + 1;
+				modif = true;
+			} catch (Exception e) {
+				//sinon on en créé une nouvelle
+				s = new Activite();
+			}
+			
+			s.setDateJour(d);
+			s.setNbloc(nblock);
 			s.setSejour(new SejourEntityService().recherche(sejour));
 			s.setSport(new SportEntityService().recherche(sport));
-			
-			ses.ajouter(s);
+		
+			if (!modif)
+				ses.ajouter(s);
+			else
+				ses.modifier(s);
+				
 			return WebServiceAnswer.createValid();
 		}
 		catch(Throwable ex)
@@ -93,24 +101,26 @@ public class WebService
 	}
 
 	@POST
-	@Path("/activite/edit/{scodeSport}/{sdateJour}/{snumSej}")
+	@Path("/activite/edit/{sid}")
 	@Produces("application/json")
 	public WebServiceAnswer activite_edit(
-			@PathParam("scodeSport") 	String scodeSport,
-			@PathParam("sdateJour") 	String sdateJour,
-			@PathParam("snumSej") 		String snumSej,
-			@FormParam("nbloc") 		String nbloc,
-			@FormParam("sejour") 		String sejour,
-			@FormParam("sport") 		String sport)
+			@PathParam("sid") 			String sid,
+			@FormParam("scodeSport") 	String scodeSport,
+			@FormParam("sdateJour") 	String sdateJour,
+			@FormParam("snumSej") 		String snumSej,
+			@FormParam("nbloc") 		String nbloc)
 	{
 		try
 		{
 			ActiviteEntityService ses = new ActiviteEntityService();
-			Activite s = ses.recherche(toActivitePK(scodeSport, sdateJour, snumSej));
+			Activite s = ses.recherche(sid);
 	
 			s.setNbloc(Integer.parseInt(nbloc));
-			s.setSejour(new SejourEntityService().recherche(sejour));
-			s.setSport(new SportEntityService().recherche(sport));
+			s.setSejour(new SejourEntityService().recherche(snumSej));
+			s.setSport(new SportEntityService().recherche(scodeSport));
+			
+			DateFormat format = new SimpleDateFormat("yyyy-MM-d", Locale.FRANCE);
+			s.setDateJour(format.parse(sdateJour));
 			
 			ses.modifier(s);
 			return WebServiceAnswer.createValid();
@@ -120,19 +130,34 @@ public class WebService
 			return WebServiceAnswer.createInvalid(ex);
 		}
 	}
-
+	
 	@GET
-	@Path("/activite/get/{scodeSport}/{sdateJour}/{snumSej}")
+	@Path("/activite/get/bySejour/{snumSej}")
 	@Produces("application/json")
-	public WebServiceAnswer activite_get(
-			@PathParam("scodeSport") 	String scodeSport,
-			@PathParam("sdateJour") 	String sdateJour,
+	public WebServiceAnswer activite_getBySej(
 			@PathParam("snumSej") 		String snumSej)
 	{
 		try
 		{
 			ActiviteEntityService ses = new ActiviteEntityService();
-			return WebServiceAnswer.createValid(ses.recherche(toActivitePK(scodeSport, sdateJour, snumSej)));
+			return WebServiceAnswer.createValid(ses.findBySejour(Integer.valueOf(snumSej)));
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid(ex);
+		}
+	}
+
+	@GET
+	@Path("/activite/get/{sid}")
+	@Produces("application/json")
+	public WebServiceAnswer activite_get(
+			@PathParam("sid") 	String sid)
+	{
+		try
+		{
+			ActiviteEntityService ses = new ActiviteEntityService();
+			return WebServiceAnswer.createValid(ses.recherche(sid));
 		}
 		catch(Throwable ex)
 		{
@@ -554,6 +579,7 @@ public class WebService
 		}
 		catch(Throwable ex)
 		{
+			System.out.println(ex);
 			return WebServiceAnswer.createInvalid(ex);
 		}
 	}

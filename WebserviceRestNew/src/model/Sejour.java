@@ -105,7 +105,7 @@ public class Sejour implements Serializable {
 
 	public Activite addActivite(Activite activite) {
 		getActivites().add(activite);
-		activite.setSejour(this);
+		//activite.setSejour(this);
 
 		return activite;
 	}
@@ -117,7 +117,6 @@ public class Sejour implements Serializable {
 		return activite;
 	}
 
-	@JsonSerialize(using = Client.JSonClient.class)
 	public Client getClient() {
 		return this.client;
 	}
