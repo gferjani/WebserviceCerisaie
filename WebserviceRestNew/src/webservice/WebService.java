@@ -1,5 +1,6 @@
 package webservice;
 	
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -753,6 +754,23 @@ public class WebService
 	/***************************************************
 	 * FACTURE
 	 ***************************************************/
+	class FactureValue implements Serializable {
+		private static final long serialVersionUID = 1L;
+		private float prixTotal;
+		public FactureValue(float pt)
+		{
+			this.prixTotal = pt;
+		}
+		public float getPrixTotal()
+		{
+			return prixTotal;
+		}
+		public void setPrixTotal(float pt)
+		{
+			this.prixTotal = pt;
+		}
+	}
+	
 	@GET
 	@Path("/facture/sejour/{sid}")
 	@Produces("application/json")
@@ -762,7 +780,7 @@ public class WebService
 		{
 			SejourEntityService ses = new SejourEntityService();
 			Sejour s = ses.recherche(sid);
-			return WebServiceAnswer.createValid(Calcul.calculPrixSejour(s));
+			return WebServiceAnswer.createValid(new FactureValue(Calcul.calculPrixSejour(s)));
 		}
 		catch(Throwable ex)
 		{
@@ -779,7 +797,7 @@ public class WebService
 		{
 			SejourEntityService ses = new SejourEntityService();
 			Sejour s = ses.recherche(sid);
-			return WebServiceAnswer.createValid(Calcul.calculPrixPrestationsSportives(s));
+			return WebServiceAnswer.createValid(new FactureValue(Calcul.calculPrixPrestationsSportives(s)));
 		}
 		catch(Throwable ex)
 		{
