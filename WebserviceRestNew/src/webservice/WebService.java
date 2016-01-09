@@ -12,6 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
+import metier.Calcul;
 import model.Activite;
 import model.Client;
 import model.Emplacement;
@@ -742,6 +743,43 @@ public class WebService
 		{
 			ClientEntityService ces = new ClientEntityService();
 			return WebServiceAnswer.createValid(ces.rechercheTous());
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid(ex);
+		}
+	}
+	
+	/***************************************************
+	 * FACTURE
+	 ***************************************************/
+	@GET
+	@Path("/facture/sejour/{sid}")
+	@Produces("application/json")
+	public WebServiceAnswer factureSejour(@PathParam("sid") String sid)
+	{
+		try
+		{
+			SejourEntityService ses = new SejourEntityService();
+			Sejour s = ses.recherche(sid);
+			return WebServiceAnswer.createValid(Calcul.calculPrixSejour(s));
+		}
+		catch(Throwable ex)
+		{
+			return WebServiceAnswer.createInvalid(ex);
+		}
+	}
+	
+	@GET
+	@Path("/facture/prestations/{sid}")
+	@Produces("application/json")
+	public WebServiceAnswer facturePrestations(@PathParam("sid") String sid)
+	{
+		try
+		{
+			SejourEntityService ses = new SejourEntityService();
+			Sejour s = ses.recherche(sid);
+			return WebServiceAnswer.createValid(Calcul.calculPrixPrestationsSportives(s));
 		}
 		catch(Throwable ex)
 		{

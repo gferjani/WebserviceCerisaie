@@ -1,8 +1,12 @@
 package metier;
 
+import model.Activite;
 import model.Emplacement;
 import model.Sejour;
+import model.Sport;
 import model.TypeEmplacement;
+
+import java.util.List;
 
 import org.joda.time.DateTime;
 import org.joda.time.Period;
@@ -24,5 +28,21 @@ public class Calcul
 		Period period = new Period(new DateTime(sejour.getDatedebSej()).toInstant(), new DateTime(sejour.getDateFinSej()));
 		
 		return period.getDays() * sejour.getNbPersonnes() * emp.getTypeEmplacement().getTariftypepl();
+	}
+	
+	/**
+	 * Calculer le prix total des prestations sportives pour un sejour
+	 * @param sejour 
+	 * @return prix total
+	 */
+	public static float calculPrixPrestationsSportives(Sejour s)
+	{
+		List<Activite> activites = s.getActivites();
+		float prixTotal = 0;
+		
+		for (Activite a : activites)
+			prixTotal += ((float)a.getNbloc() * a.getSport().getTarifUnite());
+		
+		return prixTotal;		
 	}
 }
